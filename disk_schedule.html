@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Disk Scheduling Program</title>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Zeyada&amp;display=swap'>
+  <link rel="stylesheet" href="disk_schedule_styles.css">
+  <style>    
+    .Container {
+      height: 400px; /* Adjust height as needed */
+      overflow-y: auto;
+      width: 75%;
+    }
+
+    .store {
+      color: rgb(54, 141, 254);
+    }
+
+    .copy-button {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 5px 10px;
+      background-color: #36a1fe;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .copy-button:hover {
+      background-color: #2581c4;
+    }
+  </style>
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<header>
+    <div class="menu">
+        <a href="index.html">
+            <span class="outter">
+                <span class="inner">HOME</span>
+            </span>
+        </a>
+        <a href="features.html">
+            <span class="outter">
+                <span class="inner">FEATURES</span>
+            </span>
+        </a>
+        <a href="commands.html">
+            <span class="outter">
+                <span class="inner">COMMANDS</span>
+            </span>
+        </a>
+        <a href="system_calls.html">
+            <span class="outter">
+                <span class="inner">SYSTEM CALLS</span>
+            </span>
+        </a>
+        <a href="process_synchro.html">
+            <span class="outter">
+                <span class="inner">SCHEDULING ALGO</span>
+            </span>
+        </a>
+        <a href="memory.html">
+          <span class="outter">
+              <span class="inner">MEMORY ALGO</span>
+          </span>
+      </a>
+      <a href="disk_schedule.html">
+        <span class="outter">
+            <span class="inner">DISK SCHEDULE</span>
+        </span>
+      </a>
+    </div>
+    <script>
+      let curs = document.querySelector(".cursor");
+
+      document.addEventListener("mousemove", (e) => {
+          let x = e.pageX;
+          let y = e.pageY;
+          curs.style.left = x - 50 + "px";
+          curs.style.top = y - 50 + "px";
+      });
+
+      let menuEls = document.querySelectorAll(".menu a");
+      menuEls.forEach((el) => {
+          el.addEventListener("mouseenter", () => {
+              setTimeout(() => {
+                  curs.classList.add("cursor-fade");
+              }, 300);
+          });
+
+          el.addEventListener("mouseleave", () => {
+              curs.classList.remove("cursor-fade");
+          });
+      });
+    </script>
+</header>
+<h1 style="color: white;font: small-caps;">Disk Scheduling Program</h1>
+<div class="cursor"></div>
+
+<div>
+    <section>
+        
+    </section>
+</div>
+
+<div class="Container">
+    <div class="store" id="code-block">
+        <button class="copy-button" onclick="copyCode()">#RUN</button>
+        <br><br>
+        <p>class FCFS_DiskScheduling:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;def __init__(self, requests, head_start, disk_size):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.requests = requests<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.head_start = head_start<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.disk_size = disk_size<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.size = len(requests)<br><br>
+        
+            &nbsp;&nbsp;&nbsp;&nbsp;def calculate_seek_count(self):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if self.head_start not in self.requests:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Invalid head position. Please enter a valid head position.")<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return -1<br><br>
+        
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seek_count = 0<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;head = self.head_start<br><br>
+        
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for i in range(self.size):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cur_track = self.requests[i]<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;distance = abs(cur_track - head)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seek_count += distance<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;head = cur_track<br><br>
+        
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return seek_count<br><br>
+        
+            &nbsp;&nbsp;&nbsp;&nbsp;def print_results(self):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seek_count = self.calculate_seek_count()<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if seek_count != -1:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Total number of seek operations =", seek_count)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Seek Sequence is:")<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for i in range(self.size):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(self.requests[i])<br><br>
+        
+        if __name__ == '__main__':<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;# Input the request array<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;arr = list(map(int, input("Enter the disk request array separated by spaces: ").split()))<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;# Input the initial head position<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;head = int(input("Enter the initial head position: "))<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;# Input the disk size<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;disk_size = int(input("Enter the disk size: "))<br><br>
+        
+            &nbsp;&nbsp;&nbsp;&nbsp;# Create an instance of FCFS_DiskScheduling<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;fcfs_scheduler = FCFS_DiskScheduling(arr, head, disk_size)<br><br>
+        
+            &nbsp;&nbsp;&nbsp;&nbsp;# Print the results<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;fcfs_scheduler.print_results()<br></p>
+        
+    </div>
+</div>
+
+<svg>
+    <filter id="filth">
+        <feTurbulence x="0" y="0" baseFrequency="2" numOctaves="100" seed="44">
+            <animate attributeName="baseFrequency" dur="0.5s" values="0.1;0.005;0.05" repeatCount="indefinite">
+        </feTurbulence>
+        <feDisplacementMap in="SourceGraphic" scale="20">
+    </filter>
+</svg>
+<!-- partial -->
+<script src="script.js"></script>
+
+<section class="info-section"></section>
+
+<script>
+  function copyCode() {
+    let codeBlock = document.getElementById('code-block').innerText;
+    codeBlock = codeBlock.replace(/ /g, ' '); // Replace all non-breaking spaces with regular spaces
+    const textarea = document.createElement('textarea');
+    textarea.value = codeBlock;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    alert('Code copied to clipboard!');
+    window.location.href = 'https://www.onlinegdb.com/';
+  }
+</script>
+
+</body>
+</html>
